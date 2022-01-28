@@ -6,6 +6,10 @@ let sections = Array.from(document.querySelectorAll("section"));
 let addSectionButton = document.createElement("button");
 // getting the wrapper of list items which is <ul></ul>
 let navList = document.querySelector("#navbar__list");
+// getting the hamburger button used for making the navmenue responsive
+let hamburger = document.querySelector(".hamburger");
+// fetching the menu anchors
+let navAnchors = document.querySelectorAll("#navbar__list li a");
 // End Global Variables
 
 // Start Helper Functions
@@ -37,7 +41,9 @@ function createSection() {
 // setup a function to create a list item anchor
 function createListItem(id, data) {
   let item = document.createElement("li");
-  item.innerHTML = `<a href="#${id}">${data}</a>`;
+  item.innerHTML = data;
+  item.setAttribute("section", id);
+  // item.innerHTML = `<a href="#${id}">${data}</a>`; // disable anchor to scroll to the target section
   return item;
 }
 
@@ -81,12 +87,11 @@ window.addEventListener("scroll", () => {
       getCurrentActive(sections).classList.remove("active");
       // add the active to the one that appeared in its full height
       section.classList.add("active");
-      let anchors = document.querySelectorAll("a");
-      anchors.forEach((anchor) => {
-        anchor.classList.remove("active");
-        if (anchor.href.includes(section.id)) {
-          anchor.classList.add("active");
-          console.log(section);
+      let items = document.querySelectorAll("li");
+      items.forEach((item) => {
+        item.classList.remove("active");
+        if (item.innerText.includes(section.getAttribute("data-nav"))) {
+          item.classList.add("active");
         }
       });
     }
@@ -107,3 +112,28 @@ document.querySelector("#up").addEventListener("click", () => {
     top: 0,
   });
 });
+
+// scroll into instead of scrolling by anchor IDs
+document.querySelectorAll("#navbar__list li").forEach((item) => {
+  item.addEventListener("click", () => {
+    let sectionTd = "#" + item.getAttribute("section");
+    let section = document.querySelector(sectionTd);
+    section.scrollIntoView({
+      behavior: "smooth",
+      block: "center",
+      inline: "center",
+    });
+  });
+});
+// responsinve nave menue
+hamburger.addEventListener("click", function () {
+  hamburger.classList.toggle("show");
+  navList.classList.toggle("show");
+});
+// remove the classes after any anchor is clicked
+navAnchors.forEach((a) =>
+  a.addEventListener("click", () => {
+    hamburger.classList.remove("show");
+    navList.classList.remove("show");
+  })
+);

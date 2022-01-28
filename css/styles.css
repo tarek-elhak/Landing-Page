@@ -10,9 +10,6 @@ body {
   font-family: "Merriweather", serif;
   color: #fff;
 }
-html {
-  scroll-behavior: smooth;
-}
 
 /* Typeography General*/
 h1 {
@@ -67,12 +64,19 @@ section {
 .navbar__menu li {
   display: inline-block;
   margin-right: 10px;
+  cursor: pointer;
+  color: #041562;
 }
 
-.navbar__menu li a.active {
+.navbar__menu li.active {
   background-color: #041562;
   color: #fff;
 }
+
+/* .navbar__menu li a.active {
+  background-color: #041562;
+  color: #fff;
+} */
 .navbar__menu .menu__link {
   display: block;
   padding: 1em;
@@ -264,4 +268,53 @@ section.active .landing__container::after {
   background: transparent;
   font-size: 20pt;
   cursor: pointer;
+}
+.hamburger {
+  cursor: pointer;
+  display: none;
+}
+.dash {
+  display: block;
+  width: 25px;
+  height: 3px;
+  background-color: #041562;
+  margin: 5px auto;
+  transition: all 0.3s ease-in-out;
+}
+/* for small screens, show the hamburger button to toggle the menue display*/
+@media (max-width: 768px) {
+  #navbar__list {
+    position: fixed;
+    left: -100%;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    background-color: #fff;
+    width: 100%;
+    transition: 0.3s;
+  }
+
+  #navbar__list.show {
+    left: 0px;
+  }
+
+  #navbar__list li {
+    margin: 10px 0;
+  }
+
+  .hamburger {
+    display: block;
+    position: fixed;
+    top: 0px;
+    right: 0px;
+  }
+  .hamburger.show .dash:nth-child(2) {
+    opacity: 0;
+  }
+  .hamburger.show .dash:nth-child(1) {
+    transform: translateY(8px) rotate(45deg);
+  }
+  .hamburger.show .dash:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg);
+  }
 }
