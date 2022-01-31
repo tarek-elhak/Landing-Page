@@ -9,7 +9,7 @@ let navList = document.querySelector("#navbar__list");
 // getting the hamburger button used for making the navmenue responsive
 let hamburger = document.querySelector(".hamburger");
 // fetching the menu anchors
-let navAnchors = document.querySelectorAll("#navbar__list li a");
+let navItems = Array.from(document.querySelectorAll("#navbar__list ul li"));
 // End Global Variables
 
 // Start Helper Functions
@@ -28,7 +28,7 @@ function getCurrentActive(sections) {
 // setup a function to create a new section
 function createSection() {
   let section = document.createElement("section");
-  section.setAttribute("id", `section+${sections.length + 1}`);
+  section.setAttribute("id", `section${sections.length + 1}`);
   section.setAttribute("data-nav", `section ${sections.length + 1}`);
   section.innerHTML = `<div class='landing__container'><h2>${section.getAttribute(
     "data-nav"
@@ -44,6 +44,7 @@ function createListItem(id, data) {
   item.innerHTML = data;
   item.setAttribute("section", id);
   // item.innerHTML = `<a href="#${id}">${data}</a>`; // disable anchor to scroll to the target section
+  navItems.push(item);
   return item;
 }
 
@@ -110,11 +111,13 @@ document.querySelector(".btn").addEventListener("click", () => {
 document.querySelector("#up").addEventListener("click", () => {
   window.scrollTo({
     top: 0,
+    behavior: "smooth",
   });
 });
 
 // scroll into instead of scrolling by anchor IDs
-document.querySelectorAll("#navbar__list li").forEach((item) => {
+
+navItems.forEach((item) => {
   item.addEventListener("click", () => {
     let sectionTd = "#" + item.getAttribute("section");
     let section = document.querySelector(sectionTd);
@@ -131,9 +134,11 @@ hamburger.addEventListener("click", function () {
   navList.classList.toggle("show");
 });
 // remove the classes after any anchor is clicked
-navAnchors.forEach((a) =>
-  a.addEventListener("click", () => {
-    hamburger.classList.remove("show");
-    navList.classList.remove("show");
+navItems.forEach((item) =>
+  item.addEventListener("click", () => {
+    navItems.forEach((item) => item.classList.remove("active"));
+    item.classList.add("active");
+    // hamburger.classList.remove("show");
+    // navList.classList.remove("show");
   })
 );
